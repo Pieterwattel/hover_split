@@ -1,4 +1,8 @@
 const body = document.querySelector("body");
+const bgMusic = document.querySelector("audio");
+bgMusic.muted = false;
+
+bgMusic.removeAttribute("muted");
 
 const div = document.createElement("div");
 div.style.backgroundColor = getRandomRgbValue();
