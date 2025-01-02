@@ -1,12 +1,14 @@
 body {
-  height: 99.6vh;
-  width: 99.6vw;
+  height: 99vh;
+  width: 99vw;
   margin: 0;
   overflow: hidden;
+  padding: 5px;
 }
 
 div {
   border: 0px solid black;
   width: 100%;
   height: 100%;
+  margin: 0px;
 }

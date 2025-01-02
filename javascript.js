@@ -12,9 +12,20 @@ function getRandomRgbValue() {
 function DivConstructor(e) {
   this.node = document.createElement("div");
   this.node.style.backgroundColor = getRandomRgbValue();
-  this.node.addEventListener("mouseenter", (e) => {
-    newDiv(e);
-  });
+  this.node.style.display = "flex";
+  this.node.addEventListener(
+    "mouseenter",
+    (e) => {
+      if (e.target.clientHeight > e.target.clientWidth) {
+        this.node.style.flexDirection = "column";
+      }
+
+      newDiv(e);
+      newDiv(e);
+      //addDivEvent(e);
+    },
+    { once: true }
+  );
 }
 
 DivConstructor.prototype.makeNewDiv = function (e) {
@@ -25,6 +36,17 @@ DivConstructor.prototype.makeNewDiv = function (e) {
 div.addEventListener("mouseenter", (e) => {
   newDiv(e);
 });
+
+function addDivEvent(e) {
+  e.target.addEventListener(
+    "mouseenter",
+    (e) => {
+      newDiv(e);
+      newDiv(e);
+    },
+    { once: true }
+  );
+}
 
 function newDiv(e) {
   console.log(e.target);
