@@ -15,6 +15,30 @@ Object.assign(globalPrototype, {
   },
 });
 
+//1. user moves mouse onto ParentDiv
+//function newParentSplit (){
+//  GET parent orientation
+//  SET parent flex direction
+
+//  CREATE div1 node
+//  CREATE div2 node
+//  APPEND div1 to parent
+//  APPEND div2 to parent
+
+//2. parentDiv splits in two
+//  GET the current location of the mouse
+//  	GET current hover div
+//  		SET an eventListener for when the mouse moves out on that child
+
+//	  	SET a mouse-enter eventlistener on the other child
+//	  		INIT newParentSplit(child)
+
+//3. mouse moves out of current Div
+//		  	SET a mouseenter eventlistener on the div that was just left
+//			  	INIT newParentSplit(child)
+
+zoomField.appendChild(new ParentSplit().div);
+
 /*
 
 function DivConstructor() {
