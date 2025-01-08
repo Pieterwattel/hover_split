@@ -1,46 +1,140 @@
 // Node Declarations
 const body = document.querySelector("body");
 const zoomField = document.getElementById("zoomfield");
+let hoveredDiv;
 
-let globalPrototype = Object.getPrototypeOf(
-  Object.getPrototypeOf(DivConstructor)
-);
+//ths is the global prototype:
+//Object.prototype
 
-//this works, and does get invoked
+Object.assign(Object.prototype, {});
 
-Object.assign(globalPrototype, {
+//makes the new Divs
+function DivConstructor() {
+  this.div = document.createElement("div");
+  this.div.style.backgroundColor = this.getRandomRgbValue();
+  this.div.style.display = "flex";
+}
+
+//functions written in the prototyoe of DivConstructor
+Object.assign(DivConstructor.prototype, {
+  getOrientation: function (e) {
+    if (e.target.clientHeight > e.target.clientWidth) {
+      return "high";
+    } else {
+      return "wide";
+    }
+  },
+
+  applyFlexDirection: function (parentOrientation, e) {
+    if (parentOrientation == "high") {
+      e.target.style.flexDirection = "column";
+    }
+  },
+
   getRandomRgbValue: function () {
     let getValue = () => Math.floor(Math.random() * 255);
     return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
   },
+
+  getCurrentHoverDiv: function (parentOrientation, mousePositionInParent) {
+    let mouseVerticalPosition = mousePositionInParent[0];
+    let mouseHorizontalPosition = mousePositionInParent[1];
+    if (
+      (parentOrientation == "high" && mouseVerticalPosition == "top") ||
+      (parentOrientation == "wide" && mouseHorizontalPosition == "left")
+    ) {
+      return "div1";
+    } else {
+      return "div2";
+    }
+  },
+
+  setEventListenersOnChildDivs: function (hoverDiv, div1, div2) {
+    if (hoverDiv == "div1") {
+      hoveredDiv = div1;
+      otherDiv = div2;
+    } else {
+      hoveredDiv = div2;
+      otherdiv = div1;
+    }
+    //	save the current Div as hoveredDiv
+
+    //	SET a mouse-enter eventlistener on the other child
+    //		INIT newParentSplit(child)
+  },
 });
 
 //1. user moves mouse onto ParentDiv
-//function newParentSplit (){
-//  GET parent orientation
-//  SET parent flex direction
+function newParentSplit(e) {
+  let instance = new DivConstructor();
 
-//  CREATE div1 node
-//  CREATE div2 node
-//  APPEND div1 to parent
-//  APPEND div2 to parent
+  //1. user moves mouse onto ParentDiv
+  //	GET parent orientation()
+  let parentOrientation = instance.getOrientation(e);
+  //	SET parent flex direction
+  instance.applyFlexDirection(parentOrientation, e);
 
-//2. parentDiv splits in two
-//  GET the current location of the mouse
-//  	GET current hover div
-//  		SET an eventListener for when the mouse moves out on that child
+  //	CREATE div1 node
+  let div1 = new DivConstructor().div;
+  //	CREATE div2 node
+  let div2 = new DivConstructor().div;
 
-//	  	SET a mouse-enter eventlistener on the other child
-//	  		INIT newParentSplit(child)
+  //	APPEND both divs to parent
+  e.srcElement.appendChild(div1);
+  e.srcElement.appendChild(div2);
 
-//3. mouse moves out of current Div
-//		  	SET a mouseenter eventlistener on the div that was just left
-//			  	INIT newParentSplit(child)
+  //2. parentDiv splits in two
+  //	GET the current location of the mouse
+  let mousePositionInParent = mouse.getPositionInParent(e);
 
-zoomField.appendChild(new ParentSplit().div);
+  //	GET current hover div
+  let hoverDiv = instance.getCurrentHoverDiv(
+    parentOrientation,
+    mousePositionInParent
+  );
+
+  instance.setEventListenersOnChildDivs(hoverDiv, div1, div2);
+
+  //3. mouse moves out of current Div
+  //		SET a mouseenter eventlistener on the div that was just left
+  //			INIT newParentSplit(child)
+
+  //1.
+}
+
+Object.setPrototypeOf(newParentSplit, DivConstructor.prototype);
+
+zoomField.addEventListener("mouseenter", (e) => newParentSplit(e), {
+  once: true,
+});
+
+const mouse = {
+  getPositionInParent: function (e) {
+    let mousePosition = [];
+    let parentElement = e.target.getBoundingClientRect();
+
+    let parentWidth = parentElement.right - parentElement.left;
+    let parentHeight = parentElement.bottom - parentElement.top;
+
+    mouseInParentX = e.clientX - parentElement.left;
+    mouseInParentY = e.clientY - parentElement.top;
+
+    if (mouseInParentY < parentHeight / 2) {
+      mousePosition.push("top");
+    } else {
+      mousePosition.push("bottom");
+    }
+
+    if (mouseInParentX < parentWidth / 2) {
+      mousePosition.push("left");
+    } else {
+      mousePosition.push("right");
+    }
+    return mousePosition;
+  },
+};
 
 /*
-
 function DivConstructor() {
   //creating element
   this.div = document.createElement("div");
@@ -60,6 +154,8 @@ function DivConstructor() {
 
   //adding eventlistener to trigger a new div to be made
 }
+
+----
 
 Object.assign(DivConstructor.prototype, {
   getOrientation: function (e) {
