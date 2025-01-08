@@ -50,6 +50,8 @@ Object.assign(DivConstructor.prototype, {
   },
 
   setEventListenersOnChildDivs: function (hoverDiv, div1, div2) {
+    //	save the current Div as hoveredDiv
+
     if (hoverDiv == "div1") {
       hoveredDiv = div1;
       otherDiv = div2;
@@ -57,10 +59,10 @@ Object.assign(DivConstructor.prototype, {
       hoveredDiv = div2;
       otherdiv = div1;
     }
-    //	save the current Div as hoveredDiv
 
     //	SET a mouse-enter eventlistener on the other child
     //		INIT newParentSplit(child)
+    otherDiv.addEventListener("mouseenter", (e) => newParentSplit(e));
   },
 });
 
