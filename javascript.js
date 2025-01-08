@@ -1,7 +1,8 @@
 // Node Declarations
 const body = document.querySelector("body");
 const zoomField = document.getElementById("zoomfield");
-let hoveredDiv;
+
+let hoveredDivArray = [];
 
 //ths is the global prototype:
 //Object.prototype
@@ -51,18 +52,41 @@ Object.assign(DivConstructor.prototype, {
 
   setEventListenersOnChildDivs: function (hoverDiv, div1, div2) {
     //	save the current Div as hoveredDiv
-
+    let otherDiv;
+    let hoveredDiv;
     if (hoverDiv == "div1") {
       hoveredDiv = div1;
       otherDiv = div2;
     } else {
       hoveredDiv = div2;
-      otherdiv = div1;
+      otherDiv = div1;
     }
-
+    //    console.log(otherDiv);
     //	SET a mouse-enter eventlistener on the other child
     //		INIT newParentSplit(child)
-    otherDiv.addEventListener("mouseenter", (e) => newParentSplit(e));
+
+    otherDiv.addEventListener(
+      "mouseenter",
+      (e) => {
+        newParentSplit(e);
+        hoveredDivArray.push(hoveredDiv);
+        hoveredDivArray.forEach((element) => {
+          // console.log(hoveredDivArray);
+          element.addEventListener(
+            "mouseenter",
+            (e) => {
+              newParentSplit(e);
+            },
+            { once: true }
+          );
+        });
+        console.log(hoveredDivArray);
+        hoveredDivArray = [];
+      },
+      {
+        once: true,
+      }
+    );
   },
 });
 
