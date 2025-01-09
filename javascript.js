@@ -2,7 +2,8 @@
 const body = document.querySelector("body");
 const zoomField = document.getElementById("zoomfield");
 
-let hoveredDivArray = [];
+let newEventListeners = [];
+let i = 0;
 
 //ths is the global prototype:
 //Object.prototype
@@ -64,34 +65,21 @@ Object.assign(DivConstructor.prototype, {
     //    console.log(otherDiv);
     //	SET a mouse-enter eventlistener on the other child
     //		INIT newParentSplit(child)
-
-    otherDiv.addEventListener(
-      "mouseenter",
-      (e) => {
-        newParentSplit(e);
-        hoveredDivArray.push(hoveredDiv);
-        hoveredDivArray.forEach((element) => {
-          // console.log(hoveredDivArray);
-          element.addEventListener(
-            "mouseenter",
-            (e) => {
-              newParentSplit(e);
-            },
-            { once: true }
-          );
-        });
-        console.log(hoveredDivArray);
-        hoveredDivArray = [];
-      },
-      {
+    newEventListeners.push(otherDiv);
+    newEventListeners.forEach((element) => {
+      element.addEventListener("mouseenter", (e) => newParentSplit(e), {
         once: true,
-      }
-    );
+      });
+    });
+    newEventListeners = [];
+    newEventListeners.push(hoveredDiv);
   },
 });
 
 //1. user moves mouse onto ParentDiv
 function newParentSplit(e) {
+  i += 1;
+  console.log(i);
   let instance = new DivConstructor();
 
   //1. user moves mouse onto ParentDiv
