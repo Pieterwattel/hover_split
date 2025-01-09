@@ -19,7 +19,6 @@ function getRandomRgbValue() {
 //makes the new Divs
 function DivConstructor() {
   this.div = document.createElement("div");
-  this.div.style.backgroundColor = getRandomRgbValue();
   this.div.style.display = "flex";
 }
 
@@ -63,6 +62,9 @@ Object.assign(DivConstructor.prototype, {
       hoveredDiv = div2;
       otherDiv = div1;
     }
+
+    this.giveDivsColor(hoveredDiv, otherDiv);
+
     //    console.log(otherDiv);
     //	SET a mouse-enter eventlistener on the other child
     //		INIT newParentSplit(child)
@@ -74,6 +76,10 @@ Object.assign(DivConstructor.prototype, {
     });
     newEventListeners = [];
     newEventListeners.push(hoveredDiv);
+  },
+
+  giveDivsColor: function (hoveredDiv, otherDiv) {
+    hoveredDiv.style.backgroundColor = getRandomRgbValue();
   },
 });
 
