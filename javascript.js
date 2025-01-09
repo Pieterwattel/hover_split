@@ -1,6 +1,7 @@
 // Node Declarations
 const body = document.querySelector("body");
 const zoomField = document.getElementById("zoomfield");
+zoomField.style.backgroundColor = getRandomRgbValue();
 
 let newEventListeners = [];
 let i = 0;
@@ -10,10 +11,15 @@ let i = 0;
 
 Object.assign(Object.prototype, {});
 
+function getRandomRgbValue() {
+  let getValue = () => Math.floor(Math.random() * 255);
+  return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
+}
+
 //makes the new Divs
 function DivConstructor() {
   this.div = document.createElement("div");
-  this.div.style.backgroundColor = this.getRandomRgbValue();
+  this.div.style.backgroundColor = getRandomRgbValue();
   this.div.style.display = "flex";
 }
 
@@ -31,11 +37,6 @@ Object.assign(DivConstructor.prototype, {
     if (parentOrientation == "high") {
       e.target.style.flexDirection = "column";
     }
-  },
-
-  getRandomRgbValue: function () {
-    let getValue = () => Math.floor(Math.random() * 255);
-    return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
   },
 
   getCurrentHoverDiv: function (parentOrientation, mousePositionInParent) {
@@ -152,7 +153,7 @@ const mouse = {
 function DivConstructor() {
   //creating element
   this.div = document.createElement("div");
-  this.div.style.backgroundColor = this.getRandomRgbValue();
+  this.div.style.backgroundColor = getRandomRgbValue();
   this.div.style.display = "flex";
 
   //saved the current object as currentObject, otherwise "this" refers to a dom DOM node, since that is where the listener will be
@@ -296,7 +297,7 @@ globalPrototype.getRandomRgbValue = function () {
 function DivConstructor() {
   //creating element
   this.div = document.createElement("div");
-  this.div.style.backgroundColor = this.getRandomRgbValue();
+  this.div.style.backgroundColor = getRandomRgbValue();
   this.div.style.display = "flex";
   let currentObject = this;
 
