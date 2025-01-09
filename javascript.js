@@ -16,6 +16,18 @@ function getRandomRgbValue() {
   return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
 }
 
+let previousSize = 1;
+let newSize = 1;
+
+function increaseZoomFieldSize(previousSize, speed) {
+  newSize = previousSize * speed;
+  zoomField.style.transform = `scale(${newSize})`;
+}
+
+setInterval(() => {
+  increaseZoomFieldSize(newSize, 1.001);
+}, 10);
+
 //makes the new Divs
 function DivConstructor() {
   this.div = document.createElement("div");
@@ -85,8 +97,6 @@ Object.assign(DivConstructor.prototype, {
 
 //1. user moves mouse onto ParentDiv
 function newParentSplit(e) {
-  i += 1;
-  console.log(i);
   let instance = new DivConstructor();
 
   //1. user moves mouse onto ParentDiv

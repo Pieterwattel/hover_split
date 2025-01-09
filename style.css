@@ -4,17 +4,19 @@ html {
 }
 
 body {
+  width: 100vw;
+  height: 100vh;
 }
 
 canvas {
   background-color: green;
-  height: 100%;
+  height: 50%;
   width: 100%;
 }
 
 #zoomfield {
-  height: 99vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   border: 0px solid black;
   margin: 0px;
   background-color: black;
