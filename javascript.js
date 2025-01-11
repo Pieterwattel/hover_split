@@ -6,6 +6,36 @@ zoomField.style.backgroundColor = getRandomRgbValue();
 let newEventListeners = [];
 let i = 0;
 
+let audio = [
+  new Audio("./files/audioVibraphone/1.1.mp3"),
+  new Audio("./files/audioVibraphone/1.2.mp3"),
+  new Audio("./files/audioVibraphone/1.3.mp3"),
+  new Audio("./files/audioVibraphone/1.4.mp3"),
+  new Audio("./files/audioVibraphone/1.5.mp3"),
+  new Audio("./files/audioVibraphone/1.6.mp3"),
+  new Audio("./files/audioVibraphone/1.7.mp3"),
+  new Audio("./files/audioVibraphone/1.8.mp3"),
+  new Audio("./files/audioVibraphone/1.9.mp3"),
+  new Audio("./files/audioVibraphone/1.10.mp3"),
+  new Audio("./files/audioVibraphone/1.11.mp3"),
+  new Audio("./files/audioVibraphone/1.12.mp3"),
+];
+
+let j = 0;
+playNote = function () {
+  if (j < audio.length - 1) {
+    audio[j].play();
+  }
+  j++;
+  if (j == 11) {
+    j = 0;
+  }
+};
+
+playMusic = function () {
+  setInterval(playNote(), "200");
+};
+
 //ths is the global prototype:
 //Object.prototype
 
@@ -15,18 +45,6 @@ function getRandomRgbValue() {
   let getValue = () => Math.floor(Math.random() * 255);
   return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
 }
-
-let previousSize = 1;
-let newSize = 1;
-
-function increaseZoomFieldSize(previousSize, speed) {
-  newSize = previousSize * speed;
-  zoomField.style.transform = `scale(${newSize})`;
-}
-
-setInterval(() => {
-  increaseZoomFieldSize(newSize, 1.001);
-}, 10);
 
 //makes the new Divs
 function DivConstructor() {
@@ -74,6 +92,9 @@ Object.assign(DivConstructor.prototype, {
       hoveredDiv = div2;
       otherDiv = div1;
     }
+
+    hoveredDiv.setAttribute("class", "hoveredDiv");
+    otherDiv.setAttribute("class", "otherDiv");
 
     this.giveDivsColor(hoveredDiv, otherDiv);
 
