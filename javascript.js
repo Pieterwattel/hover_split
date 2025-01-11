@@ -2,6 +2,7 @@
 const body = document.querySelector("body");
 const zoomField = document.getElementById("zoomfield");
 zoomField.style.backgroundColor = getRandomRgbValue();
+zoomField.addEventListener("mouseenter", () => playNote());
 
 let newEventListeners = [];
 let i = 0;
@@ -103,6 +104,7 @@ Object.assign(DivConstructor.prototype, {
     //		INIT newParentSplit(child)
     newEventListeners.push(otherDiv);
     newEventListeners.forEach((element) => {
+      element.addEventListener("mouseenter", () => playNote());
       element.addEventListener("mouseenter", (e) => newParentSplit(e), {
         once: true,
       });
