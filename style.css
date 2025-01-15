@@ -48,15 +48,25 @@ div {
 }
 
 #resetBtn,
-#deviationInput {
+#deviationInput,
+#audioBtn {
   margin: 0.5rem;
   font-size: 1.3rem;
   border: 2px solid black;
   max-height: fit-content;
   border-radius: 5px;
   background-color: var(--main-color-light);
+  padding: 0px 5px 0px 5px;
 }
 
 #deviationInput {
   width: 100px;
+}
+
+#audioBtn {
+  max-height: fit-content;
+  max-width: fit-content;
+  font-weight: 900;
+  background-color: white;
+  color: black;
 }

@@ -1,6 +1,7 @@
 // Node Declarations
 const body = document.querySelector("body");
 const contentDiv = document.getElementById("contentDiv");
+const playAudioBtn = document.getElementById("audioBtn");
 const resetBtn = document.getElementById("resetBtn");
 const deviationInput = document.getElementById("deviationInput");
 let newEventListeners = [];
@@ -182,6 +183,17 @@ resetBtn.addEventListener("click", () => {
     once: true,
   });
 });
+
+console.log(playAudioBtn);
+
+playAudioBtn.addEventListener(
+  "click",
+  () => {
+    let audio = new Audio("./files/doorDeStad.wav");
+    audio.play();
+  },
+  { once: true }
+);
 
 function colorUI(color) {
   document.documentElement.style.setProperty(
