@@ -6,18 +6,18 @@ let newEventListeners = [];
 let i = 0;
 
 let audio = [
-  new Audio("./files/audioVibraphone/1.1.mp3"),
-  new Audio("./files/audioVibraphone/1.2.mp3"),
-  new Audio("./files/audioVibraphone/1.3.mp3"),
-  new Audio("./files/audioVibraphone/1.4.mp3"),
-  new Audio("./files/audioVibraphone/1.5.mp3"),
-  new Audio("./files/audioVibraphone/1.6.mp3"),
-  new Audio("./files/audioVibraphone/1.7.mp3"),
-  new Audio("./files/audioVibraphone/1.8.mp3"),
-  new Audio("./files/audioVibraphone/1.9.mp3"),
-  new Audio("./files/audioVibraphone/1.10.mp3"),
-  new Audio("./files/audioVibraphone/1.11.mp3"),
-  new Audio("./files/audioVibraphone/1.12.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.1.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.2.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.3.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.4.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.5.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.6.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.7.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.8.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.9.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.10.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.11.mp3"),
+  new Audio("./files/chromaticVoiceNotes/1.12.mp3"),
 ];
 
 let newAudio = [];
@@ -35,7 +35,7 @@ playNote = function () {
   }
   console.log(j);
   j++;
-  if (j == 11) {
+  if (j > 11) {
     j = 0;
   }
 };
