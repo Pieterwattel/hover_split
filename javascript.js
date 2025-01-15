@@ -21,6 +21,14 @@ function darkenRgb(rgb) {
   }
 }
 
+function lightenRgb(rgb) {
+  if (typeof rgb == "string") {
+    let rgbNumbers = rgb.match(/\d+/g).map(Number);
+    rgbNumbers = rgbNumbers.map((number) => Math.max(0, number * 2));
+    return `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
+  }
+}
+
 //makes the new Divs
 function DivConstructor() {
   this.div = document.createElement("div");
@@ -159,10 +167,7 @@ deviationInput.addEventListener("mouseout", (e) => {
 
 let bgColor = getRandomRgbValue();
 contentDiv.style.backgroundColor = bgColor;
-document.documentElement.style.setProperty(
-  "--main-color-dark",
-  darkenRgb(bgColor)
-);
+colorUI(bgColor);
 contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
   once: true,
 });
@@ -170,15 +175,24 @@ contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
 resetBtn.addEventListener("click", () => {
   contentDiv.innerHTML = "";
   let bgColor = getRandomRgbValue();
+  colorUI(bgColor);
   contentDiv.style.backgroundColor = bgColor;
-  document.documentElement.style.setProperty(
-    "--main-color-dark",
-    darkenRgb(bgColor)
-  );
+
   contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
     once: true,
   });
 });
+
+function colorUI(color) {
+  document.documentElement.style.setProperty(
+    "--main-color-dark",
+    darkenRgb(color)
+  );
+  document.documentElement.style.setProperty(
+    "--main-color-light",
+    lightenRgb(color)
+  );
+}
 
 const mouse = {
   getPositionInParent: function (e) {

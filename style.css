@@ -1,5 +1,6 @@
 :root {
   --main-color-dark: "grey";
+  --main-color-light: "white";
 }
 
 * {
@@ -52,4 +53,10 @@ div {
   font-size: 1.3rem;
   border: 2px solid black;
   max-height: fit-content;
+  border-radius: 5px;
+  background-color: var(--main-color-light);
+}
+
+#deviationInput {
+  width: 100px;
 }
