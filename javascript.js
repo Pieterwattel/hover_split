@@ -3,7 +3,6 @@ const body = document.querySelector("body");
 const contentDiv = document.getElementById("contentDiv");
 const resetBtn = document.getElementById("resetBtn");
 const deviationInput = document.getElementById("deviationInput");
-contentDiv.style.backgroundColor = getRandomRgbValue();
 let newEventListeners = [];
 let i = 0;
 
@@ -12,6 +11,14 @@ Object.assign(Object.prototype, {});
 function getRandomRgbValue() {
   let getValue = () => Math.floor(Math.random() * 255);
   return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
+}
+
+function darkenRgb(rgb) {
+  if (typeof rgb == "string") {
+    let rgbNumbers = rgb.match(/\d+/g).map(Number);
+    rgbNumbers = rgbNumbers.map((number) => Math.max(0, number * 0.7));
+    return `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
+  }
 }
 
 //makes the new Divs
@@ -146,17 +153,28 @@ function newParentSplit(e) {
 
 Object.setPrototypeOf(newParentSplit, DivConstructor.prototype);
 
-contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
-  once: true,
-});
-
 deviationInput.addEventListener("mouseout", (e) => {
   e.target.blur();
 });
 
+let bgColor = getRandomRgbValue();
+contentDiv.style.backgroundColor = bgColor;
+document.documentElement.style.setProperty(
+  "--main-color-dark",
+  darkenRgb(bgColor)
+);
+contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
+  once: true,
+});
+
 resetBtn.addEventListener("click", () => {
   contentDiv.innerHTML = "";
-  contentDiv.style.backgroundColor = getRandomRgbValue();
+  let bgColor = getRandomRgbValue();
+  contentDiv.style.backgroundColor = bgColor;
+  document.documentElement.style.setProperty(
+    "--main-color-dark",
+    darkenRgb(bgColor)
+  );
   contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
     once: true,
   });

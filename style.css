@@ -25,6 +25,7 @@ body {
 
 #interface {
   max-height: fit-content;
+  background-color: var(--main-color-dark);
 }
 
 #contentDiv {
