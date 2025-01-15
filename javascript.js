@@ -6,18 +6,18 @@ let newEventListeners = [];
 let i = 0;
 
 let audio = [
-  new Audio("./files/chromaticVoiceNotes/1.1.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.2.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.3.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.4.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.5.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.6.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.7.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.8.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.9.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.10.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.11.mp3"),
-  new Audio("./files/chromaticVoiceNotes/1.12.mp3"),
+  new Audio("./files/audioVibraphone/1.mp3"),
+  new Audio("./files/audioVibraphone/2.mp3"),
+  new Audio("./files/audioVibraphone/3.mp3"),
+  new Audio("./files/audioVibraphone/4.mp3"),
+  new Audio("./files/audioVibraphone/5.mp3"),
+  new Audio("./files/audioVibraphone/6.mp3"),
+  new Audio("./files/audioVibraphone/7.mp3"),
+  new Audio("./files/audioVibraphone/8.mp3"),
+  new Audio("./files/audioVibraphone/9.mp3"),
+  new Audio("./files/audioVibraphone/10.mp3"),
+  new Audio("./files/audioVibraphone/11.mp3"),
+  new Audio("./files/audioVibraphone/12.mp3"),
 ];
 
 let newAudio = [];
@@ -92,7 +92,7 @@ Object.assign(DivConstructor.prototype, {
     }
   },
 
-  setEventListenersOnChildDivs: function (hoverDiv, div1, div2) {
+  setEventListenersOnChildDivs: function (hoverDiv, div1, div2, e) {
     //	save the current Div as hoveredDiv
     let otherDiv;
     let hoveredDiv;
@@ -107,14 +107,14 @@ Object.assign(DivConstructor.prototype, {
     hoveredDiv.setAttribute("class", "hoveredDiv");
     otherDiv.setAttribute("class", "otherDiv");
 
-    this.giveDivsColor(hoveredDiv, otherDiv);
+    this.giveDivsColor(hoveredDiv, otherDiv, e);
 
     //    console.log(otherDiv);
     //	SET a mouse-enter eventlistener on the other child
     //		INIT newParentSplit(child)
     newEventListeners.push(otherDiv);
     newEventListeners.forEach((element) => {
-      element.addEventListener("mouseenter", () => playNote(), { once: true });
+      // element.addEventListener("mouseenter", () => playNote(), { once: true });
       element.addEventListener("mouseenter", (e) => newParentSplit(e), {
         once: true,
       });
@@ -123,13 +123,31 @@ Object.assign(DivConstructor.prototype, {
     newEventListeners.push(hoveredDiv);
   },
 
-  giveDivsColor: function (hoveredDiv, otherDiv) {
-    hoveredDiv.style.backgroundColor = getRandomRgbValue();
+  giveDivsColor: function (hoveredDiv, otherDiv, e) {
+    otherDiv.style.backgroundColor = e.target.style.backgroundColor;
+
+    hoveredDiv.style.backgroundColor = this.darkenRgb(
+      e.target.style.backgroundColor
+    );
+    //hoveredDiv.style.backgroundColor =
+  },
+
+  darkenRgb: function (rgb) {
+    let rgbNumbers = rgb.match(/\d+/g).map(Number);
+    rgbNumbers = rgbNumbers.map((number) => {
+      let deviation = Math.floor((Math.random() - 0.5) * 100);
+      console.log(deviation);
+      return number + deviation;
+    });
+    let newValue = `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
+    console.log(newValue);
+    return newValue;
   },
 });
 
 //1. user moves mouse onto ParentDiv
 function newParentSplit(e) {
+  console.log("1" + e.target.parentElement.style);
   let instance = new DivConstructor();
 
   //1. user moves mouse onto ParentDiv
@@ -157,7 +175,7 @@ function newParentSplit(e) {
     mousePositionInParent
   );
 
-  instance.setEventListenersOnChildDivs(hoverDiv, div1, div2);
+  instance.setEventListenersOnChildDivs(hoverDiv, div1, div2, e);
 
   //3. mouse moves out of current Div
   //		SET a mouseenter eventlistener on the div that was just left
