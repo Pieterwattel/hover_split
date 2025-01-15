@@ -1,54 +1,11 @@
 // Node Declarations
 const body = document.querySelector("body");
-const zoomField = document.getElementById("zoomfield");
-zoomField.style.backgroundColor = getRandomRgbValue();
+const contentDiv = document.getElementById("contentDiv");
+const resetBtn = document.getElementById("resetBtn");
+const deviationInput = document.getElementById("deviationInput");
+contentDiv.style.backgroundColor = getRandomRgbValue();
 let newEventListeners = [];
 let i = 0;
-
-let audio = [
-  new Audio("./files/audioVibraphone/1.mp3"),
-  new Audio("./files/audioVibraphone/2.mp3"),
-  new Audio("./files/audioVibraphone/3.mp3"),
-  new Audio("./files/audioVibraphone/4.mp3"),
-  new Audio("./files/audioVibraphone/5.mp3"),
-  new Audio("./files/audioVibraphone/6.mp3"),
-  new Audio("./files/audioVibraphone/7.mp3"),
-  new Audio("./files/audioVibraphone/8.mp3"),
-  new Audio("./files/audioVibraphone/9.mp3"),
-  new Audio("./files/audioVibraphone/10.mp3"),
-  new Audio("./files/audioVibraphone/11.mp3"),
-  new Audio("./files/audioVibraphone/12.mp3"),
-];
-
-let newAudio = [];
-
-let loadFiles = (function () {
-  audio.forEach((file, index) => {
-    newAudio.push(file.load());
-  });
-})();
-
-let j = 0;
-playNote = function () {
-  let jumpDistance = 9;
-  if (j < newAudio.length - 1) {
-    audio[j].play();
-  }
-  console.log(j);
-  j = j + jumpDistance;
-  if (j >= 11) {
-    j = j - 11;
-  }
-};
-
-zoomField.addEventListener("mouseenter", () => playNote(), { once: true });
-
-playMusic = function () {
-  setInterval(playNote(), "200");
-};
-
-//ths is the global prototype:
-//Object.prototype
 
 Object.assign(Object.prototype, {});
 
@@ -134,8 +91,11 @@ Object.assign(DivConstructor.prototype, {
 
   darkenRgb: function (rgb) {
     let rgbNumbers = rgb.match(/\d+/g).map(Number);
+
     rgbNumbers = rgbNumbers.map((number) => {
-      let deviation = Math.floor((Math.random() - 0.5) * 100);
+      let deviation = Math.floor(
+        (Math.random() - 0.5) * (deviationInput.value || 125)
+      );
       console.log(deviation);
       return number + deviation;
     });
@@ -186,8 +146,21 @@ function newParentSplit(e) {
 
 Object.setPrototypeOf(newParentSplit, DivConstructor.prototype);
 
-zoomField.addEventListener("mouseenter", (e) => newParentSplit(e), {
+contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
   once: true,
+});
+
+deviationInput.addEventListener("mouseout", (e) => {
+  e.target.blur();
+});
+
+resetBtn.addEventListener("click", () => {
+  contentDiv.innerHTML = "";
+  console.log(getRandomRgbValue());
+  contentDiv.style.backgroundColor = getRandomRgbValue();
+  contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
+    once: true,
+  });
 });
 
 const mouse = {
@@ -340,7 +313,7 @@ const mouse = {
 };
 
 //this is the first DIV being applied, which has an eventlistener to split into 2 new divs
-zoomField.appendChild(new DivConstructor().div);
+contentDiv.appendChild(new DivConstructor().div);
 
 */
 
@@ -349,7 +322,7 @@ zoomField.appendChild(new DivConstructor().div);
 
 // Node Declarations
 const body = document.querySelector("body");
-const zoomField = document.getElementById("zoomfield");
+const contentDiv = document.getElementById("contentDiv");
 
 let globalPrototype = Object.getPrototypeOf(
   Object.getPrototypeOf(DivConstructor)
@@ -403,6 +376,6 @@ Object.assign(DivConstructor.prototype, {
 });
 
 //this is the first DIV being applied, which has an eventlistener to split into 2 new divs
-zoomField.appendChild(new DivConstructor().div);
+contentDiv.appendChild(new DivConstructor().div);
 
 */

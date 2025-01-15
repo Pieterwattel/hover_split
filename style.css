@@ -8,12 +8,10 @@ body {
   height: 100vh;
 }
 
-#zoomfield {
+#contentDiv {
   height: 100%;
   width: 100%;
-  background-color: white !important;
   display: flex;
-  background-color: rgb(99, 99, 99) !important;
 }
 
 *:last-child {
