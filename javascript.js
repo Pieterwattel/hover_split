@@ -156,7 +156,6 @@ deviationInput.addEventListener("mouseout", (e) => {
 
 resetBtn.addEventListener("click", () => {
   contentDiv.innerHTML = "";
-  console.log(getRandomRgbValue());
   contentDiv.style.backgroundColor = getRandomRgbValue();
   contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
     once: true,
