@@ -2,8 +2,6 @@
 const body = document.querySelector("body");
 const zoomField = document.getElementById("zoomfield");
 zoomField.style.backgroundColor = getRandomRgbValue();
-zoomField.addEventListener("mouseenter", () => playNote());
-
 let newEventListeners = [];
 let i = 0;
 
@@ -22,16 +20,27 @@ let audio = [
   new Audio("./files/audioVibraphone/1.12.mp3"),
 ];
 
+let newAudio = [];
+
+let loadFiles = (function () {
+  audio.forEach((file, index) => {
+    newAudio.push(file.load());
+  });
+})();
+
 let j = 0;
 playNote = function () {
-  if (j < audio.length - 1) {
+  if (j < newAudio.length - 1) {
     audio[j].play();
   }
+  console.log(j);
   j++;
   if (j == 11) {
     j = 0;
   }
 };
+
+zoomField.addEventListener("mouseenter", () => playNote(), { once: true });
 
 playMusic = function () {
   setInterval(playNote(), "200");
@@ -104,7 +113,7 @@ Object.assign(DivConstructor.prototype, {
     //		INIT newParentSplit(child)
     newEventListeners.push(otherDiv);
     newEventListeners.forEach((element) => {
-      element.addEventListener("mouseenter", () => playNote());
+      element.addEventListener("mouseenter", () => playNote(), { once: true });
       element.addEventListener("mouseenter", (e) => newParentSplit(e), {
         once: true,
       });
