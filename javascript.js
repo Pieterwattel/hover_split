@@ -30,13 +30,14 @@ let loadFiles = (function () {
 
 let j = 0;
 playNote = function () {
+  let jumpDistance = 9;
   if (j < newAudio.length - 1) {
     audio[j].play();
   }
   console.log(j);
-  j++;
-  if (j > 11) {
-    j = 0;
+  j = j + jumpDistance;
+  if (j >= 11) {
+    j = j - 11;
   }
 };
 
