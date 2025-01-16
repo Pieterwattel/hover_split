@@ -12,26 +12,67 @@ let i = 0;
 
 Object.assign(Object.prototype, {});
 
-function getRandomRgbValue() {
-  let getValue = () => Math.floor(Math.random() * 255);
-  return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
-}
+const MOUSE = {
+  getPositionInParent: function (e) {
+    let mousePosition = [];
+    let parentElement = e.target.getBoundingClientRect();
 
-function darkenRgb(rgb) {
-  if (typeof rgb == "string") {
-    let rgbNumbers = rgb.match(/\d+/g).map(Number);
-    rgbNumbers = rgbNumbers.map((number) => Math.max(0, number * 0.7));
-    return `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
-  }
-}
+    let parentWidth = parentElement.right - parentElement.left;
+    let parentHeight = parentElement.bottom - parentElement.top;
 
-function lightenRgb(rgb) {
-  if (typeof rgb == "string") {
+    mouseInParentX = e.clientX - parentElement.left;
+    mouseInParentY = e.clientY - parentElement.top;
+
+    if (mouseInParentY < parentHeight / 2) {
+      mousePosition.push("top");
+    } else {
+      mousePosition.push("bottom");
+    }
+
+    if (mouseInParentX < parentWidth / 2) {
+      mousePosition.push("left");
+    } else {
+      mousePosition.push("right");
+    }
+    return mousePosition;
+  },
+};
+
+const COLOR = {
+  getRandomRgbValue: function () {
+    let getValue = () => Math.floor(Math.random() * 255);
+    return `rgb(${getValue()}, ${getValue()}, ${getValue()})`;
+  },
+  darkenRgb: function (rgb) {
+    if (typeof rgb == "string") {
+      let rgbNumbers = rgb.match(/\d+/g).map(Number);
+      rgbNumbers = rgbNumbers.map((number) => Math.max(0, number * 0.7));
+      return `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
+    }
+  },
+  lightenRgb: function (rgb) {
+    if (typeof rgb == "string") {
+      let rgbNumbers = rgb.match(/\d+/g).map(Number);
+      rgbNumbers = rgbNumbers.map((number) => Math.max(0, number * 2));
+      return `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
+    }
+  },
+
+  deviateRgb: function (rgb) {
     let rgbNumbers = rgb.match(/\d+/g).map(Number);
-    rgbNumbers = rgbNumbers.map((number) => Math.max(0, number * 2));
-    return `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
-  }
-}
+
+    rgbNumbers = rgbNumbers.map((number) => {
+      let deviation = Math.floor(
+        (Math.random() - 0.5) * (node.deviationInput.value || 125)
+      );
+      console.log(deviation);
+      return number + deviation;
+    });
+    let newValue = `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
+    console.log(newValue);
+    return newValue;
+  },
+};
 
 //makes the new Divs
 function DivConstructor() {
@@ -68,7 +109,7 @@ Object.assign(DivConstructor.prototype, {
     }
   },
 
-  setEventListenersOnChildDivs: function (hoverDiv, div1, div2, e) {
+  finishAndAppendNewDivs: function (hoverDiv, div1, div2, e) {
     //	save the current Div as hoveredDiv
     let otherDiv;
     let hoveredDiv;
@@ -80,46 +121,34 @@ Object.assign(DivConstructor.prototype, {
       otherDiv = div1;
     }
 
+    //give the divs the correct class so they can be styled appropiately
     hoveredDiv.setAttribute("class", "hoveredDiv");
     otherDiv.setAttribute("class", "otherDiv");
 
     this.giveDivsColor(hoveredDiv, otherDiv, e);
 
-    //    console.log(otherDiv);
-    //	SET a mouse-enter eventlistener on the other child
-    //		INIT newParentSplit(child)
+    this.addEventListenersToDivs(otherDiv, hoveredDiv);
+
+    e.srcElement.appendChild(div1);
+    e.srcElement.appendChild(div2);
+  },
+
+  giveDivsColor: function (hoveredDiv, otherDiv, e) {
+    let parentColor = e.target.style.backgroundColor;
+    otherDiv.style.backgroundColor = parentColor;
+
+    hoveredDiv.style.backgroundColor = COLOR.deviateRgb(parentColor);
+  },
+
+  addEventListenersToDivs: function (otherDiv, hoveredDiv) {
     newEventListeners.push(otherDiv);
     newEventListeners.forEach((element) => {
-      // element.addEventListener("mouseenter", () => playNote(), { once: true });
       element.addEventListener("mouseenter", (e) => newParentSplit(e), {
         once: true,
       });
     });
     newEventListeners = [];
     newEventListeners.push(hoveredDiv);
-  },
-
-  giveDivsColor: function (hoveredDiv, otherDiv, e) {
-    otherDiv.style.backgroundColor = e.target.style.backgroundColor;
-
-    hoveredDiv.style.backgroundColor = this.darkenRgb(
-      e.target.style.backgroundColor
-    );
-  },
-
-  darkenRgb: function (rgb) {
-    let rgbNumbers = rgb.match(/\d+/g).map(Number);
-
-    rgbNumbers = rgbNumbers.map((number) => {
-      let deviation = Math.floor(
-        (Math.random() - 0.5) * (node.deviationInput.value || 125)
-      );
-      console.log(deviation);
-      return number + deviation;
-    });
-    let newValue = `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
-    console.log(newValue);
-    return newValue;
   },
 });
 
@@ -140,12 +169,10 @@ function newParentSplit(e) {
   let div2 = new DivConstructor().div;
 
   //	APPEND both divs to parent
-  e.srcElement.appendChild(div1);
-  e.srcElement.appendChild(div2);
 
   //2. parentDiv splits in two
   //	GET the current location of the mouse
-  let mousePositionInParent = mouse.getPositionInParent(e);
+  let mousePositionInParent = MOUSE.getPositionInParent(e);
 
   //	GET current hover div
   let hoverDiv = instance.getCurrentHoverDiv(
@@ -153,84 +180,73 @@ function newParentSplit(e) {
     mousePositionInParent
   );
 
-  instance.setEventListenersOnChildDivs(hoverDiv, div1, div2, e);
-
-  //3. mouse moves out of current Div
-  //		SET a mouseenter eventlistener on the div that was just left
-  //			INIT newParentSplit(child)
-
-  //1.
+  instance.finishAndAppendNewDivs(hoverDiv, div1, div2, e);
 }
 
+//make newParentSplit inherit the functions of the divConstructor
 Object.setPrototypeOf(newParentSplit, DivConstructor.prototype);
 
-node.deviationInput.addEventListener("mouseout", (e) => {
-  e.target.blur();
-});
+let eventListeners = (function () {
+  node.deviationInput.addEventListener("mouseout", (e) => {
+    e.target.blur();
+  });
 
-let bgColor = getRandomRgbValue();
-node.contentDiv.style.backgroundColor = bgColor;
-colorUI(bgColor);
-node.contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
-  once: true,
-});
-
-node.resetBtn.addEventListener("click", () => {
-  node.contentDiv.innerHTML = "";
-  let bgColor = getRandomRgbValue();
-  colorUI(bgColor);
+  let bgColor = COLOR.getRandomRgbValue();
   node.contentDiv.style.backgroundColor = bgColor;
-
+  colorUI(bgColor);
   node.contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
     once: true,
   });
-});
 
-console.log(node.playAudioBtn);
+  node.resetBtn.addEventListener("click", () => {
+    node.contentDiv.innerHTML = "";
+    let bgColor = getRando;
+    colorUI(bgColor);
+    node.contentDiv.style.backgroundColor = bgColor;
 
-node.playAudioBtn.addEventListener(
-  "click",
-  () => {
-    let audio = new Audio("./files/doorDeStad.wav");
-    audio.play();
-  },
-  { once: true }
-);
+    node.contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
+      once: true,
+    });
+  });
+
+  node.playAudioBtn.addEventListener(
+    "click",
+    () => {
+      let audio = new Audio("./files/doorDeStad.mp3");
+      audio.play();
+    },
+    { once: true }
+  );
+})();
 
 function colorUI(color) {
   document.documentElement.style.setProperty(
     "--main-color-dark",
-    darkenRgb(color)
+    COLOR.darkenRgb(color)
   );
   document.documentElement.style.setProperty(
     "--main-color-light",
-    lightenRgb(color)
+    COLOR.lightenRgb(color)
   );
   document.documentElement.style.setProperty("--main-color", color);
 }
 
-const mouse = {
-  getPositionInParent: function (e) {
-    let mousePosition = [];
-    let parentElement = e.target.getBoundingClientRect();
+let checkUserAgent = (function () {
+  let details = navigator.userAgent;
 
-    let parentWidth = parentElement.right - parentElement.left;
-    let parentHeight = parentElement.bottom - parentElement.top;
+  /* Creating a regular expression  
+  containing some mobile devices keywords  
+  to search it in details string*/
+  let regexp = /android|iphone|kindle|ipad/i;
 
-    mouseInParentX = e.clientX - parentElement.left;
-    mouseInParentY = e.clientY - parentElement.top;
+  /* Using test() method to search regexp in details 
+  it returns boolean value*/
+  let isMobileDevice = regexp.test(details);
 
-    if (mouseInParentY < parentHeight / 2) {
-      mousePosition.push("top");
-    } else {
-      mousePosition.push("bottom");
-    }
-
-    if (mouseInParentX < parentWidth / 2) {
-      mousePosition.push("left");
-    } else {
-      mousePosition.push("right");
-    }
-    return mousePosition;
-  },
-};
+  if (isMobileDevice) {
+    document.documentElement = "";
+    document.documentElement.textContent =
+      "This website is currently only available through desktop";
+  } else {
+  }
+})();
