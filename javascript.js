@@ -1,9 +1,12 @@
 // Node Declarations
-const body = document.querySelector("body");
-const contentDiv = document.getElementById("contentDiv");
-const playAudioBtn = document.getElementById("audioBtn");
-const resetBtn = document.getElementById("resetBtn");
-const deviationInput = document.getElementById("deviationInput");
+let node = {
+  body: document.querySelector("body"),
+  contentDiv: document.getElementById("contentDiv"),
+  playAudioBtn: document.getElementById("audioBtn"),
+  resetBtn: document.getElementById("resetBtn"),
+  deviationInput: document.getElementById("deviationInput"),
+};
+
 let newEventListeners = [];
 let i = 0;
 
@@ -102,7 +105,6 @@ Object.assign(DivConstructor.prototype, {
     hoveredDiv.style.backgroundColor = this.darkenRgb(
       e.target.style.backgroundColor
     );
-    //hoveredDiv.style.backgroundColor =
   },
 
   darkenRgb: function (rgb) {
@@ -110,7 +112,7 @@ Object.assign(DivConstructor.prototype, {
 
     rgbNumbers = rgbNumbers.map((number) => {
       let deviation = Math.floor(
-        (Math.random() - 0.5) * (deviationInput.value || 125)
+        (Math.random() - 0.5) * (node.deviationInput.value || 125)
       );
       console.log(deviation);
       return number + deviation;
@@ -162,31 +164,31 @@ function newParentSplit(e) {
 
 Object.setPrototypeOf(newParentSplit, DivConstructor.prototype);
 
-deviationInput.addEventListener("mouseout", (e) => {
+node.deviationInput.addEventListener("mouseout", (e) => {
   e.target.blur();
 });
 
 let bgColor = getRandomRgbValue();
-contentDiv.style.backgroundColor = bgColor;
+node.contentDiv.style.backgroundColor = bgColor;
 colorUI(bgColor);
-contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
+node.contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
   once: true,
 });
 
-resetBtn.addEventListener("click", () => {
-  contentDiv.innerHTML = "";
+node.resetBtn.addEventListener("click", () => {
+  node.contentDiv.innerHTML = "";
   let bgColor = getRandomRgbValue();
   colorUI(bgColor);
-  contentDiv.style.backgroundColor = bgColor;
+  node.contentDiv.style.backgroundColor = bgColor;
 
-  contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
+  node.contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
     once: true,
   });
 });
 
-console.log(playAudioBtn);
+console.log(node.playAudioBtn);
 
-playAudioBtn.addEventListener(
+node.playAudioBtn.addEventListener(
   "click",
   () => {
     let audio = new Audio("./files/doorDeStad.wav");
@@ -204,6 +206,7 @@ function colorUI(color) {
     "--main-color-light",
     lightenRgb(color)
   );
+  document.documentElement.style.setProperty("--main-color", color);
 }
 
 const mouse = {
