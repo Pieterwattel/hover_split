@@ -65,11 +65,9 @@ const COLOR = {
       let deviation = Math.floor(
         (Math.random() - 0.5) * (node.deviationInput.value || 125)
       );
-      console.log(deviation);
       return number + deviation;
     });
     let newValue = `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
-    console.log(newValue);
     return newValue;
   },
 };
@@ -154,7 +152,6 @@ Object.assign(DivConstructor.prototype, {
 
 //1. user moves mouse onto ParentDiv
 function newParentSplit(e) {
-  console.log("1" + e.target.parentElement.style);
   let instance = new DivConstructor();
 
   //1. user moves mouse onto ParentDiv
