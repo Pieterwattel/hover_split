@@ -197,13 +197,14 @@ let eventListeners = (function () {
 
   node.resetBtn.addEventListener("click", () => {
     node.contentDiv.innerHTML = "";
-    let bgColor = getRando;
+    let bgColor = COLOR.getRandomRgbValue();
     colorUI(bgColor);
     node.contentDiv.style.backgroundColor = bgColor;
 
     node.contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
       once: true,
     });
+    console.log(node.contentDiv.eventListeners);
   });
 
   node.playAudioBtn.addEventListener(
