@@ -70,6 +70,14 @@ const COLOR = {
     let newValue = `rgb(${rgbNumbers[0]}, ${rgbNumbers[1]}, ${rgbNumbers[2]})`;
     return newValue;
   },
+
+  blackOrWhiteEqualChance: function () {
+    if (Math.random() > 0.5) {
+      return "black";
+    } else {
+      return "white";
+    }
+  },
 };
 
 //makes the new Divs
@@ -204,7 +212,6 @@ let eventListeners = (function () {
     node.contentDiv.addEventListener("mouseenter", (e) => newParentSplit(e), {
       once: true,
     });
-    console.log(node.contentDiv.eventListeners);
   });
 
   node.playAudioBtn.addEventListener(
@@ -226,7 +233,25 @@ function colorUI(color) {
     "--main-color-light",
     COLOR.lightenRgb(color)
   );
+
+  document.documentElement.style.setProperty(
+    "--random-color",
+    COLOR.blackOrWhiteEqualChance()
+  );
+  document.documentElement.style.setProperty(
+    "--div-border",
+    `${getRandomBorderWidth()}px`
+  );
+
   document.documentElement.style.setProperty("--main-color", color);
+}
+
+function getRandomBorderWidth() {
+  if (Math.random() > 0.1) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 let checkUserAgent = (function () {

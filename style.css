@@ -3,6 +3,7 @@
   --main-color-dark: "grey";
   --main-color-light: "white";
   --div-border: 1px;
+  --random-color: black;
 }
 
 * {
@@ -30,6 +31,7 @@ body {
 #interface {
   max-height: 2.8rem;
   background-color: var(--main-color-dark);
+  border: 0;
 }
 
 #contentDiv {
@@ -43,7 +45,7 @@ div {
   height: 100%;
   width: 100%;
   display: flex;
-  border: var(--div-border) solid black;
+  border: var(--div-border) solid var(--random-color);
 }
 
 .otherDiv {
