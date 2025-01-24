@@ -28,7 +28,7 @@ body {
 }
 
 #interface {
-  max-height: fit-content;
+  max-height: 2.8rem;
   background-color: var(--main-color-dark);
 }
 
