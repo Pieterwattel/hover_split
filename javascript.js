@@ -63,7 +63,7 @@ const COLOR = {
 
     rgbNumbers = rgbNumbers.map((number) => {
       let deviation = Math.floor(
-        (Math.random() - 0.5) * (node.deviationInput.value || 125)
+        (Math.random() - 0.5) * (node.deviationInput.value || 100)
       );
       return number + deviation;
     });
