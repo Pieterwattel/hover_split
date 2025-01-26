@@ -217,7 +217,7 @@ let eventListeners = (function () {
   node.playAudioBtn.addEventListener(
     "click",
     () => {
-      let audio = new Audio("./files/doorDeStad.mp3");
+      let audio = new Audio("./files/doorDeStad.wav");
       audio.play();
     },
     { once: true }
